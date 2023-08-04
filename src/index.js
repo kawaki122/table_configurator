@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 
 const colorsEnum = {
@@ -33,8 +33,8 @@ function initialize() {
 
   renderer.setSize(container.clientWidth, container.clientHeight);
   container.appendChild(renderer.domElement);
-  camera.position.z = 2;
-  camera.position.y = 1;
+  camera.position.z = 200;
+  camera.position.y = 100;
 }
 
 function animate() {
@@ -47,43 +47,72 @@ function animate() {
 function attachListeners() {
   const length = document.getElementById("lengthInput")
   const lengthLabel = document.getElementById("lengthLabel");
+  const width = document.getElementById("widthInput")
+  const widthLabel = document.getElementById("widthLabel");
+  const height = document.getElementById("heightInput")
+  const heightLabel = document.getElementById("heightLabel");
+  const color = document.getElementById("colorInput")
 
   length.oninput = function() {
-    console.log(this.value);
-    frame.children[0].scale.set(1, 1+(this.value/20), 1)
-    frame.children[1].scale.set(1, 1+(this.value/20), 1)
-    frame.children[0].position.set(0.28, -(this.value/25), 0)
-    frame.children[1].position.set(0, -(this.value/25), 0)
-    frame.children[2].position.set(0, (this.value/33)-0.097, 0)
-    frame.children[3].position.set(0, -((this.value/33)-0.097), 0)
+    frame.children[6].scale.setZ(1+(this.value/20));
+    frame.children[7].scale.setZ(1+(this.value/20));
+
+    frame.children[3].position.setZ(-(this.value*30.8))
+    frame.children[1].position.setZ(-(this.value*30.8))
+    frame.children[5].position.setZ(-(this.value*30.8))
+
+    frame.children[0].position.setZ((this.value*30.8))
+    frame.children[2].position.setZ((this.value*30.8))
+    frame.children[4].position.setZ((this.value*30.8))
     lengthLabel.innerHTML = 20+Number(this.value)
+  }
+
+  width.oninput = function () {
+    frame.children[4].scale.setX(1+(this.value/20))
+    frame.children[5].scale.setX(1+(this.value/20))
+
+    frame.children[3].position.setX((this.value*11.1))
+    frame.children[1].position.setX(-(this.value*11.1))
+    frame.children[0].position.setX(-(this.value*11.1))
+    frame.children[2].position.setX((this.value*11.1))
+
+    frame.children[6].position.setX(-(this.value*11.1))
+    frame.children[7].position.setX((this.value*11.1))
+    widthLabel.innerHTML = 10+Number(this.value)
+  }
+
+  height.oninput = function () {
+    frame.children[1].scale.setY(1+(this.value/20))
+    frame.children[3].scale.setY(1+(this.value/20))
+    frame.children[0].scale.setY(1+(this.value/20))
+    frame.children[2].scale.setY(1+(this.value/20))
+
+    frame.children[4].position.setY((this.value*36.45))
+    frame.children[5].position.setY((this.value*36.45))
+    frame.children[6].position.setY((this.value*36.45))
+    frame.children[7].position.setY((this.value*36.45))
+    heightLabel.innerHTML = 10+Number(this.value)
+  }
+
+  color.oninput = function (event) {
+    frame.children[0].material.color.set(event.target.value);
+    frame.children[1].material.color.set(event.target.value);
+    frame.children[2].material.color.set(event.target.value);
+    frame.children[3].material.color.set(event.target.value);
+    frame.children[4].material.color.set(event.target.value);
+    frame.children[5].material.color.set(event.target.value);
+    frame.children[6].material.color.set(event.target.value);
+    frame.children[7].material.color.set(event.target.value);
   }
 }
 
 function loadModel() {
-  const loader = new GLTFLoader(loadManager);
-  loader.load(`./assets/models/thusia.glb`, (obj) => {
-    frame = new THREE.Group();
-    let suport1 = createMesh(obj.scene.children[0].geometry);
-    let suport2 = createMesh(obj.scene.children[1].geometry);
-    let legs1 = createMesh(obj.scene.children[2].geometry);
-    let legs2 = createMesh(obj.scene.children[3].geometry);
-
-    suport1.position.set(0.28, 0, 0);
-    legs1.position.set(0, -0.097, 0);
-    legs2.position.set(0, 0.097, 0);
-
-    console.log(suport1)
-
-    frame.add(suport1);
-    frame.add(suport2);
-    frame.add(legs1);
-    frame.add(legs2);
-
-    frame.rotation.set(Math.PI / 2, 0, 0);
-    frame.position.set(-0.35, 0, -0.8);
-
-    scene.add(frame);
+  const loader = new OBJLoader(loadManager);
+  loader.load(`./assets/models/thusia.obj`, (obj) => {
+    frame = obj;
+    obj.scale.set(0.1, 0.1, 0.1)
+    
+    scene.add(obj);
   });
 }
 
