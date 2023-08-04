@@ -56,7 +56,7 @@ function attachListeners() {
     frame.children[1].position.set(0, -(this.value/25), 0)
     frame.children[2].position.set(0, (this.value/33)-0.097, 0)
     frame.children[3].position.set(0, -((this.value/33)-0.097), 0)
-    lengthLabel.innerHTML = 10+Number(this.value)
+    lengthLabel.innerHTML = 20+Number(this.value)
   }
 }
 
