@@ -1,7 +1,33 @@
 body {
+    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif;
     padding: 0;
     margin: 0;
 }
 .myCanvas {
     height: 100vh;
+    flex: 1;
+}
+.container {
+    display: flex;
+}
+.menu-container {
+    border-right: 4px solid lightgray;
+    width: 20%;
+    padding: 20px;
+}
+label {
+    display: block;
+    font-size: 16;
+    font-weight: 500;
+    margin-bottom: 5px;
+    margin-top: 30px;
+}
+.value-container {
+    background: lightgray;
+    border-radius: 20px;
+    padding: 5px;
+    font-size: 13px;
+    width: fit-content;
+    display: inline;
+    margin-left: 8px;
 }

@@ -13,6 +13,7 @@ initialize();
 animate();
 loadModel();
 lightUp();
+attachListeners();
 
 function initialize() {
   const container = document.getElementById("myCanvas");
@@ -26,7 +27,7 @@ function initialize() {
   renderer = new THREE.WebGLRenderer();
   controls = new OrbitControls(camera, renderer.domElement);
   controls.maxPolarAngle = Math.PI / 2;
-  controls.autoRotate = true;
+  // controls.autoRotate = true;
 
   scene.background = new THREE.Color("#ffffff");
 
@@ -43,10 +44,25 @@ function animate() {
   renderer.render(scene, camera);
 }
 
+function attachListeners() {
+  const length = document.getElementById("lengthInput")
+  const lengthLabel = document.getElementById("lengthLabel");
+
+  length.oninput = function() {
+    console.log(this.value);
+    frame.children[0].scale.set(1, 1+(this.value/20), 1)
+    frame.children[1].scale.set(1, 1+(this.value/20), 1)
+    frame.children[0].position.set(0.28, -(this.value/25), 0)
+    frame.children[1].position.set(0, -(this.value/25), 0)
+    frame.children[2].position.set(0, (this.value/33)-0.097, 0)
+    frame.children[3].position.set(0, -((this.value/33)-0.097), 0)
+    lengthLabel.innerHTML = 10+Number(this.value)
+  }
+}
+
 function loadModel() {
   const loader = new GLTFLoader(loadManager);
   loader.load(`./assets/models/thusia.glb`, (obj) => {
-    console.log(obj);
     frame = new THREE.Group();
     let suport1 = createMesh(obj.scene.children[0].geometry);
     let suport2 = createMesh(obj.scene.children[1].geometry);
@@ -56,6 +72,8 @@ function loadModel() {
     suport1.position.set(0.28, 0, 0);
     legs1.position.set(0, -0.097, 0);
     legs2.position.set(0, 0.097, 0);
+
+    console.log(suport1)
 
     frame.add(suport1);
     frame.add(suport2);
@@ -91,7 +109,7 @@ function lightUp() {
   const directionalLight7 = new THREE.DirectionalLight(0xffffff, 0.15);
   const directionalLight8 = new THREE.DirectionalLight(0xffffff, 0.15);
   const directionalLight9 = new THREE.DirectionalLight(0xffffff, 0.15);
-  const light = new THREE.AmbientLight(0x404040, 2); // soft white light
+  const light = new THREE.AmbientLight(0x404040, 2);
 
   directionalLight.position.x = 25;
   directionalLight.position.y = 20;
